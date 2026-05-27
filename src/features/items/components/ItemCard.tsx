@@ -16,9 +16,10 @@ const TYPE_COLOR: Record<StudyItem['type'], string> = {
 interface ItemCardProps {
   item: StudyItem;
   onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
-export default function ItemCard({ item, onToggle }: ItemCardProps) {
+export default function ItemCard({ item, onToggle, onDelete }: ItemCardProps) {
   const isCompleted = item.status === 'completed';
 
   return (
@@ -35,6 +36,7 @@ export default function ItemCard({ item, onToggle }: ItemCardProps) {
           onChange={() => onToggle(item.id)}
           className="mt-1 w-4 h-4 accent-pink-400 cursor-pointer"
         />
+
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TYPE_COLOR[item.type]}`}>
@@ -49,6 +51,15 @@ export default function ItemCard({ item, onToggle }: ItemCardProps) {
             <ExamDailyPlan dailyPlan={item.dailyPlan} unit={item.unit} />
           )}
         </div>
+        {isCompleted && (
+          <button
+            onClick={() => onDelete(item.id)}
+            aria-label="항목 삭제"
+            className="text-gray-300 hover:text-red-400 transition-colors text-sm px-1"
+          >
+            ✕
+          </button>
+        )}
       </div>
     </div>
   );

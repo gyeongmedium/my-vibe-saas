@@ -7,29 +7,12 @@ import ItemForm from '@/features/items/components/ItemForm';
 import FilterTabs, { FilterValue } from '@/features/items/components/FilterTabs';
 import ItemList from '@/features/items/components/ItemList';
 import StudyModeOverlay from '@/features/study-mode/components/StudyModeOverlay';
-import { mockItems } from '@/features/items/mock-data';
-import { StudyItem } from '@/features/items/types';
+import { useItems } from '@/features/items/useItems';
 
 export default function AppPage() {
-  const [items, setItems] = useState<StudyItem[]>(mockItems);
+  const { items, addItem, toggleItem, deleteItem } = useItems();
   const [filter, setFilter] = useState<FilterValue>('all');
   const [isStudyMode, setIsStudyMode] = useState(false);
-
-  const handleAdd = (item: StudyItem) => {
-    setItems((prev) =>
-      [...prev, item].sort((a, b) => a.dueDate.localeCompare(b.dueDate))
-    );
-  };
-
-  const handleToggle = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, status: item.status === 'completed' ? 'pending' : 'completed' }
-          : item
-      )
-    );
-  };
 
   const filtered = filter === 'all' ? items : items.filter((i) => i.type === filter);
 
@@ -37,7 +20,7 @@ export default function AppPage() {
     <div className="min-h-screen bg-pink-50 flex flex-col max-w-md mx-auto">
       <AppHeader onStudyModeOpen={() => setIsStudyMode(true)} />
 
-      <ItemForm onAdd={handleAdd} />
+      <ItemForm onAdd={addItem} />
 
       <FilterTabs selected={filter} onChange={setFilter} />
 
@@ -45,7 +28,7 @@ export default function AppPage() {
         {filtered.length === 0 ? (
           <EmptyState message="아직 항목이 없어요. 추가해볼까요?" />
         ) : (
-          <ItemList items={filtered} onToggle={handleToggle} />
+          <ItemList items={filtered} onToggle={toggleItem} onDelete={deleteItem} />
         )}
       </main>
 

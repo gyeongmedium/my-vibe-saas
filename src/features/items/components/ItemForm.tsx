@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ItemType, StudyItem } from '../types';
+import { distributeScope } from '@/lib/examSchedule';
 
 const TYPE_OPTIONS: { label: string; value: ItemType }[] = [
   { label: '과제', value: 'assignment' },
@@ -42,7 +43,7 @@ export default function ItemForm({ onAdd }: ItemFormProps) {
 
     const newItem: StudyItem =
       type === 'exam'
-        ? { ...base, type: 'exam', scope: Number(scope), unit, dailyPlan: [] }
+        ? { ...base, type: 'exam', scope: Number(scope), unit, dailyPlan: distributeScope(Number(scope), unit, dueDate) }
         : type === 'lecture'
         ? { ...base, type: 'lecture' }
         : { ...base, type: 'assignment' };
