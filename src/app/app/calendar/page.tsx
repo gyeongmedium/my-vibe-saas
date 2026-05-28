@@ -1,151 +1,134 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useItems } from '@/features/items/useItems';
 import { StudyItem } from '@/features/items/types';
 
 const TYPE_COLOR: Record<StudyItem['type'], string> = {
-  assignment: 'bg-blue-400',
-  lecture: 'bg-yellow-400',
-  exam: 'bg-pink-400',
+  assignment: '#000080',
+  lecture: '#808000',
+  exam: '#800000',
 };
-
 const TYPE_LABEL: Record<StudyItem['type'], string> = {
-  assignment: '과제',
-  lecture: '강의',
-  exam: '시험',
+  assignment: '과제', lecture: '강의', exam: '시험',
 };
-
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 export default function CalendarPage() {
   const { items } = useItems();
   const [current, setCurrent] = useState(new Date());
-
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const year = current.getFullYear();
   const month = current.getMonth();
-
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-
   const today = new Date().toISOString().slice(0, 10);
 
-  // 날짜별 항목 매핑
   const itemsByDate: Record<string, StudyItem[]> = {};
   items.forEach((item) => {
     if (!itemsByDate[item.dueDate]) itemsByDate[item.dueDate] = [];
     itemsByDate[item.dueDate].push(item);
   });
 
-  const prevMonth = () => setCurrent(new Date(year, month - 1, 1));
-  const nextMonth = () => setCurrent(new Date(year, month + 1, 1));
-
   const cells = Array.from({ length: firstDay + daysInMonth }, (_, i) =>
     i < firstDay ? null : i - firstDay + 1
   );
 
+  if (!mounted) return (
+    <div>
+      <div className="win95-title">
+        <span>달력</span>
+      </div>
+      <div style={{ background: '#c0c0c0', padding: '28px 32px', textAlign: 'center', fontSize: 13 }}>불러오는 중...</div>
+    </div>
+  );
+
   return (
-    <div className="flex flex-col">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-pink-100">
-        <h1 className="text-xl font-bold text-pink-500">📅 달력</h1>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={prevMonth}
-            aria-label="이전 달"
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-pink-100 text-pink-400 transition-colors"
-          >
-            ‹
-          </button>
-          <span className="text-sm font-semibold text-gray-600">
-            {year}년 {month + 1}월
-          </span>
-          <button
-            onClick={nextMonth}
-            aria-label="다음 달"
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-pink-100 text-pink-400 transition-colors"
-          >
-            ›
-          </button>
+    <div>
+      {/* 타이틀바 */}
+      <div className="win95-title">
+        <div className="flex items-center gap-2">
+          <span style={{ display: 'inline-block', width: 16, height: 16, background: '#ffffff', border: '1px solid #000', fontSize: 10, textAlign: 'center', lineHeight: '16px' }}>C</span>
+          <span>달력</span>
+        </div>
+        <div className="flex gap-1">
+          <button className="win95-title-btn">?</button>
+          <button className="win95-title-btn">X</button>
         </div>
       </div>
 
-      {/* 요일 헤더 */}
-      <div className="grid grid-cols-7 px-2 pt-3">
-        {WEEKDAYS.map((d, i) => (
-          <div
-            key={d}
-            className={`text-center text-xs font-medium pb-2 ${
-              i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-400'
-            }`}
-          >
-            {d}
-          </div>
-        ))}
-      </div>
+      <div style={{ background: '#c0c0c0', padding: '28px 32px' }}>
+        {/* 월 네비게이션 */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+          <button onClick={() => setCurrent(new Date(year, month - 1, 1))} aria-label="이전 달"
+            className="win95-btn" style={{ minWidth: 60, fontSize: 14 }}>
+            &lt;
+          </button>
+          <span style={{ fontSize: 16, fontWeight: 'bold' }}>{year}년 {month + 1}월</span>
+          <button onClick={() => setCurrent(new Date(year, month + 1, 1))} aria-label="다음 달"
+            className="win95-btn" style={{ minWidth: 60, fontSize: 14 }}>
+            &gt;
+          </button>
+        </div>
 
-      {/* 날짜 그리드 */}
-      <div className="grid grid-cols-7 px-2 gap-y-1">
-        {cells.map((day, idx) => {
-          if (!day) return <div key={`empty-${idx}`} />;
-
-          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-          const dayItems = itemsByDate[dateStr] || [];
-          const isToday = dateStr === today;
-          const dayOfWeek = (firstDay + day - 1) % 7;
-
-          return (
-            <div key={dateStr} className="flex flex-col items-center py-1 min-h-[60px]">
-              {/* 날짜 숫자 */}
-              <span
-                className={`w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-1 ${
-                  isToday
-                    ? 'bg-pink-400 text-white'
-                    : dayOfWeek === 0
-                    ? 'text-red-400'
-                    : dayOfWeek === 6
-                    ? 'text-blue-400'
-                    : 'text-gray-600'
-                }`}
-              >
-                {day}
-              </span>
-
-              {/* 항목 배지 */}
-              <div className="flex flex-col gap-0.5 w-full px-0.5">
-                {dayItems.slice(0, 2).map((item) => (
-                  <div
-                    key={item.id}
-                    className={`group relative cursor-default ${item.status === 'completed' ? 'opacity-40' : ''}`}
-                  >
-                    {/* 배지 텍스트 */}
-                    <div className={`text-white text-[9px] px-1 py-0.5 rounded truncate ${TYPE_COLOR[item.type]}`}>
-                      {TYPE_LABEL[item.type]}
-                    </div>
-                    {/* hover 툴팁 — overflow:hidden 바깥에 위치 */}
-                    <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 z-50 hidden group-hover:block bg-gray-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap shadow-lg">
-                      {item.title}
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800" />
-                    </div>
-                  </div>
-                ))}
-                {dayItems.length > 2 && (
-                  <div className="text-[9px] text-gray-400 text-center">+{dayItems.length - 2}</div>
-                )}
+        {/* 달력 본체 */}
+        <div className="win95-sunken" style={{ background: '#fff' }}>
+          {/* 요일 헤더 */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: '#c0c0c0', borderBottom: '1px solid #808080' }}>
+            {WEEKDAYS.map((d, i) => (
+              <div key={d} style={{ textAlign: 'center', fontSize: 13, fontWeight: 'bold', padding: '12px 0', color: i === 0 ? '#cc0000' : i === 6 ? '#0000cc' : '#000' }}>
+                {d}
               </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* 범례 */}
-      <div className="flex gap-3 justify-center px-4 py-4 mt-2">
-        {(Object.entries(TYPE_COLOR) as [StudyItem['type'], string][]).map(([type, color]) => (
-          <div key={type} className="flex items-center gap-1">
-            <div className={`w-2 h-2 rounded-full ${color}`} />
-            <span className="text-xs text-gray-400">{TYPE_LABEL[type]}</span>
+            ))}
           </div>
-        ))}
+
+          {/* 날짜 그리드 */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
+            {cells.map((day, idx) => {
+              if (!day) return <div key={`e-${idx}`} style={{ borderRight: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }} />;
+              const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+              const dayItems = itemsByDate[dateStr] || [];
+              const isToday = dateStr === today;
+              const dow = (firstDay + day - 1) % 7;
+
+              return (
+                <div key={dateStr} style={{
+                  minHeight: 88, padding: '10px 8px',
+                  borderRight: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0',
+                  background: isToday ? '#000080' : '#fff',
+                }}>
+                  <div style={{ textAlign: 'right', fontSize: 14, fontWeight: 'bold', marginBottom: 6,
+                    color: isToday ? '#fff' : dow === 0 ? '#cc0000' : dow === 6 ? '#0000cc' : '#000' }}>
+                    {day}
+                  </div>
+                  {dayItems.slice(0, 2).map((item) => (
+                    <div key={item.id} className="group relative cursor-default" style={{ marginBottom: 3, opacity: item.status === 'completed' ? 0.5 : 1 }}>
+                      <div style={{ background: TYPE_COLOR[item.type], color: '#fff', fontSize: 11, padding: '2px 5px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                        {TYPE_LABEL[item.type]}
+                      </div>
+                      <div className="hidden group-hover:block pointer-events-none absolute bottom-full left-0 z-50"
+                        style={{ background: '#ffffcc', border: '1px solid #000', fontSize: 11, padding: '3px 8px', whiteSpace: 'nowrap' }}>
+                        {item.title}
+                      </div>
+                    </div>
+                  ))}
+                  {dayItems.length > 2 && <div style={{ fontSize: 10, color: '#808080' }}>+{dayItems.length - 2}</div>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 범례 */}
+        <div style={{ display: 'flex', gap: 24, marginTop: 20 }}>
+          {(Object.entries(TYPE_COLOR) as [StudyItem['type'], string][]).map(([type, color]) => (
+            <div key={type} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+              <div style={{ width: 14, height: 14, background: color }} />
+              <span>{TYPE_LABEL[type]}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

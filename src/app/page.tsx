@@ -1,93 +1,101 @@
 import Link from 'next/link';
 
 const PROBLEMS = [
-  { emoji: '😵', text: '과제와 온라인 강의 마감을 놓친다' },
-  { emoji: '📚', text: '시험 범위가 넓어 공부를 어떻게 나눠야 할지 모른다' },
-  { emoji: '😴', text: '시험기간에는 집중이 잘 안 된다' },
+  { icon: '!', text: '과제와 온라인 강의 마감을 놓친다' },
+  { icon: '?', text: '시험 범위가 넓어 공부를 어떻게 나눠야 할지 모른다' },
+  { icon: 'Z', text: '시험기간에는 집중이 잘 안 된다' },
 ];
 
 const FEATURES = [
-  {
-    emoji: '📋',
-    title: '마감기한 관리',
-    desc: '과제와 강의 마감일을 한눈에 정리해요',
-  },
-  {
-    emoji: '📅',
-    title: '시험 범위 배분',
-    desc: '범위를 입력하면 날짜별 공부량을 자동으로 계산해요',
-  },
-  {
-    emoji: '🐣',
-    title: '캐릭터 공부 모드',
-    desc: '귀여운 친구와 함께 집중 타이머를 켜요',
-  },
+  { icon: 'D', title: '마감기한 관리',    desc: '과제와 강의 마감일을 한눈에 정리해요' },
+  { icon: 'C', title: '시험 범위 배분',   desc: '범위를 입력하면 날짜별 공부량을 자동으로 계산해요' },
+  { icon: 'T', title: '캐릭터 공부 모드', desc: '집중 타이머와 함께 공부해요' },
 ];
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-pink-50 flex flex-col">
-      {/* Hero */}
-      <section className="flex flex-col items-center justify-center text-center px-6 pt-20 pb-16 gap-6">
-        <span className="text-8xl animate-bounce">🐣</span>
-        <h1 className="text-3xl font-bold text-gray-800 leading-snug">
-          시험기간,<br />이제 헤매지 마세요
-        </h1>
-        <p className="text-gray-500 text-base max-w-xs leading-relaxed">
-          과제, 온라인 강의, 시험 범위까지 — 마감을 놓치지 않게 정리하고,
-          귀여운 공부 친구와 함께 집중해요.
-        </p>
-        <Link
-          href="/app"
-          className="mt-2 px-8 py-3 rounded-full bg-pink-400 text-white font-semibold text-base hover:bg-pink-500 transition-colors shadow-md"
-        >
-          지금 시작하기 →
-        </Link>
-      </section>
+    <main style={{ minHeight: '100vh', background: '#008080', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}>
+      <div style={{ width: '100%', maxWidth: 600, background: '#c0c0c0', border: '2px solid', borderColor: '#ffffff #808080 #808080 #ffffff' }}>
 
-      {/* Problem */}
-      <section className="px-6 py-10 bg-white">
-        <h2 className="text-lg font-bold text-gray-700 text-center mb-6">
-          이런 적 있지 않으셨나요?
-        </h2>
-        <ul className="flex flex-col gap-4 max-w-sm mx-auto">
-          {PROBLEMS.map((p) => (
-            <li key={p.text} className="flex items-start gap-3 bg-pink-50 rounded-2xl px-4 py-3">
-              <span className="text-2xl">{p.emoji}</span>
-              <p className="text-sm text-gray-600 leading-relaxed">{p.text}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+        {/* 타이틀바 */}
+        <div style={{ background: 'linear-gradient(to right, #000080, #1084d0)', color: '#fff', padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', userSelect: 'none' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 'bold', fontSize: 13 }}>
+            <span style={{ display: 'inline-block', width: 16, height: 16, background: '#ffff00', border: '1px solid #000', fontSize: 10, textAlign: 'center', lineHeight: '16px', fontWeight: 'bold', color: '#000' }}>S</span>
+            시험 플래너
+          </div>
+          <div style={{ display: 'flex', gap: 4 }}>
+            {['?', 'X'].map((b) => (
+              <span key={b} style={{ background: '#c0c0c0', border: '2px solid', borderColor: '#ffffff #808080 #808080 #ffffff', width: 20, height: 18, fontSize: 10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'default', fontWeight: 'bold', color: '#000' }}>{b}</span>
+            ))}
+          </div>
+        </div>
 
-      {/* Core Features */}
-      <section className="px-6 py-10">
-        <h2 className="text-lg font-bold text-gray-700 text-center mb-6">
-          이렇게 도와드릴게요
-        </h2>
-        <ul className="flex flex-col gap-4 max-w-sm mx-auto">
-          {FEATURES.map((f) => (
-            <li key={f.title} className="bg-white rounded-2xl px-5 py-4 shadow-sm flex items-start gap-4">
-              <span className="text-3xl">{f.emoji}</span>
-              <div>
-                <p className="font-semibold text-gray-700 text-sm mb-0.5">{f.title}</p>
-                <p className="text-xs text-gray-400 leading-relaxed">{f.desc}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
+        {/* 콘텐츠 */}
+        <div style={{ padding: '48px 56px', fontFamily: "'MS Sans Serif', Arial, sans-serif" }}>
 
-      {/* CTA */}
-      <section className="flex flex-col items-center px-6 py-12 gap-4">
-        <p className="text-gray-500 text-sm">지금 바로 시작해보세요</p>
-        <Link
-          href="/app"
-          className="px-8 py-3 rounded-full bg-pink-400 text-white font-semibold text-base hover:bg-pink-500 transition-colors shadow-md"
-        >
-          지금 시작하기 →
-        </Link>
-      </section>
+          {/* Hero */}
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <div style={{ fontSize: 12, color: '#808080', marginBottom: 14 }}>ver 1.0 — 대학생 시험기간 관리 도구</div>
+            <h1 style={{ fontSize: 22, fontWeight: 'bold', color: '#000080', marginBottom: 20, lineHeight: 1.5 }}>
+              시험기간, 이제 헤매지 마세요
+            </h1>
+            <p style={{ fontSize: 13, color: '#404040', lineHeight: 2, marginBottom: 32 }}>
+              과제·강의·시험 범위를 한 곳에서 관리하고<br />
+              날짜별 공부량을 자동으로 계산해드려요.
+            </p>
+            <Link href="/app">
+              <button style={{ background: '#c0c0c0', border: '2px solid', borderColor: '#ffffff #808080 #808080 #ffffff', padding: '10px 48px', fontSize: 14, fontWeight: 'bold', cursor: 'pointer', fontFamily: "'MS Sans Serif', Arial, sans-serif" }}>
+                시작하기
+              </button>
+            </Link>
+          </div>
+
+          {/* 구분선 */}
+          <div style={{ border: 'none', borderTop: '1px solid #808080', borderBottom: '1px solid #ffffff', margin: '0 0 36px' }} />
+
+          {/* 문제 섹션 */}
+          <div style={{ marginBottom: 36 }}>
+            <div style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 16 }}>이런 적 있지 않으셨나요?</div>
+            <div style={{ border: '2px solid', borderColor: '#808080 #ffffff #ffffff #808080', background: '#fff' }}>
+              {PROBLEMS.map((p, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px', borderBottom: i < PROBLEMS.length - 1 ? '1px solid #e8e8e8' : 'none', fontSize: 13 }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, background: '#000080', color: '#fff', fontSize: 12, fontWeight: 'bold', flexShrink: 0 }}>{p.icon}</span>
+                  {p.text}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 기능 섹션 */}
+          <div style={{ marginBottom: 36 }}>
+            <div style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 16 }}>이렇게 도와드릴게요</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {FEATURES.map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 16, background: '#c0c0c0', border: '2px solid', borderColor: '#ffffff #808080 #808080 #ffffff', padding: '16px 20px' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, background: '#000080', color: '#fff', fontSize: 14, fontWeight: 'bold', flexShrink: 0 }}>{f.icon}</span>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 'bold', marginBottom: 6 }}>{f.title}</div>
+                    <div style={{ fontSize: 12, color: '#404040', lineHeight: 1.6 }}>{f.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 하단 버튼 */}
+          <div style={{ borderTop: '1px solid #808080', paddingTop: 28, display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+            <Link href="/app">
+              <button style={{ background: '#c0c0c0', border: '2px solid', borderColor: '#ffffff #808080 #808080 #ffffff', padding: '8px 32px', fontSize: 13, fontWeight: 'bold', cursor: 'pointer', fontFamily: "'MS Sans Serif', Arial, sans-serif" }}>
+                시작하기
+              </button>
+            </Link>
+            <button style={{ background: '#c0c0c0', border: '2px solid', borderColor: '#ffffff #808080 #808080 #ffffff', padding: '8px 32px', fontSize: 13, cursor: 'pointer', fontFamily: "'MS Sans Serif', Arial, sans-serif" }}>
+              취소
+            </button>
+          </div>
+
+        </div>
+      </div>
     </main>
   );
 }

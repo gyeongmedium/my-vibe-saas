@@ -31,47 +31,29 @@ export default function ItemForm({ onAdd }: ItemFormProps) {
       return;
     }
     setError('');
-
     const base = {
-      id: crypto.randomUUID(),
-      type,
-      title: title.trim(),
-      dueDate,
-      status: 'pending' as const,
-      createdAt: new Date().toISOString(),
+      id: crypto.randomUUID(), type, title: title.trim(),
+      dueDate, status: 'pending' as const, createdAt: new Date().toISOString(),
     };
-
     const newItem: StudyItem =
       type === 'exam'
         ? { ...base, type: 'exam', scope: Number(scope), unit, dailyPlan: distributeScope(Number(scope), unit, dueDate) }
-        : type === 'lecture'
-        ? { ...base, type: 'lecture' }
-        : { ...base, type: 'assignment' };
-
+        : type === 'lecture' ? { ...base, type: 'lecture' } : { ...base, type: 'assignment' };
     onAdd(newItem);
-    setTitle('');
-    setDueDate('');
-    setScope('');
+    setTitle(''); setDueDate(''); setScope('');
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mx-4 my-4 p-4 rounded-2xl border border-pink-100 bg-white flex flex-col gap-3"
-    >
+    <form onSubmit={handleSubmit} style={{ background: '#c0c0c0', padding: '20px 24px', borderBottom: '1px solid #808080' }}>
       {/* 유형 선택 */}
-      <div className="flex gap-2">
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
         {TYPE_OPTIONS.map((opt) => (
           <button
-            key={opt.value}
-            type="button"
+            key={opt.value} type="button"
             aria-pressed={type === opt.value}
             onClick={() => setType(opt.value)}
-            className={`flex-1 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              type === opt.value
-                ? 'bg-pink-400 text-white'
-                : 'bg-pink-50 text-pink-400 hover:bg-pink-100'
-            }`}
+            className={`win95-btn ${type === opt.value ? 'win95-btn-pressed' : ''}`}
+            style={{ flex: 1, fontSize: 13 }}
           >
             {opt.label}
           </button>
@@ -79,65 +61,50 @@ export default function ItemForm({ onAdd }: ItemFormProps) {
       </div>
 
       {/* 제목 */}
-      <div>
-        <label htmlFor="item-title" className="sr-only">항목 제목</label>
-        <input
-          id="item-title"
-          type="text"
-          placeholder="제목을 입력하세요"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-3 py-2 rounded-xl border border-pink-100 text-sm outline-none focus:border-pink-300"
-        />
+      <div style={{ marginBottom: 14 }}>
+        <label htmlFor="item-title" style={{ display: 'block', fontSize: 13, marginBottom: 5 }}>항목 제목:</label>
+        <input id="item-title" type="text" placeholder="제목을 입력하세요" value={title}
+          onChange={(e) => setTitle(e.target.value)} className="win95-input" />
       </div>
 
       {/* 마감기한 */}
-      <div>
-        <label htmlFor="item-due" className="sr-only">마감기한</label>
-        <input
-          id="item-due"
-          type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-          className="w-full px-3 py-2 rounded-xl border border-pink-100 text-sm outline-none focus:border-pink-300 text-gray-600"
-        />
+      <div style={{ marginBottom: 14 }}>
+        <label htmlFor="item-due" style={{ display: 'block', fontSize: 13, marginBottom: 5 }}>마감기한:</label>
+        <input id="item-due" type="date" value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)} className="win95-input" />
       </div>
 
-      {/* 시험 범위 (시험 유형일 때만) */}
+      {/* 시험 범위 */}
       {type === 'exam' && (
-        <div className="flex gap-2">
-          <div className="flex-1">
-            <label htmlFor="item-scope" className="sr-only">시험 범위</label>
-            <input
-              id="item-scope"
-              type="number"
-              min={1}
-              placeholder="범위 총량"
-              value={scope}
-              onChange={(e) => setScope(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl border border-pink-100 text-sm outline-none focus:border-pink-300"
-            />
+        <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
+          <div style={{ flex: 1 }}>
+            <label htmlFor="item-scope" style={{ display: 'block', fontSize: 13, marginBottom: 5 }}>시험 범위:</label>
+            <input id="item-scope" type="number" min={1} placeholder="총 범위" value={scope}
+              onChange={(e) => setScope(e.target.value)} className="win95-input" />
           </div>
-          <select
-            aria-label="범위 단위"
-            value={unit}
-            onChange={(e) => setUnit(e.target.value as 'chapter' | 'page')}
-            className="px-3 py-2 rounded-xl border border-pink-100 text-sm outline-none focus:border-pink-300 text-gray-600"
-          >
-            <option value="chapter">챕터</option>
-            <option value="page">페이지</option>
-          </select>
+          <div>
+            <label style={{ display: 'block', fontSize: 13, marginBottom: 5 }}>단위:</label>
+            <select aria-label="범위 단위" value={unit}
+              onChange={(e) => setUnit(e.target.value as 'chapter' | 'page')}
+              className="win95-input" style={{ width: 90 }}>
+              <option value="chapter">챕터</option>
+              <option value="page">페이지</option>
+            </select>
+          </div>
         </div>
       )}
 
-      {error && <p role="alert" className="text-xs text-red-400">{error}</p>}
+      {error && (
+        <p role="alert" style={{ fontSize: 12, color: '#cc0000', marginBottom: 12 }}>
+          {error}
+        </p>
+      )}
 
-      <button
-        type="submit"
-        className="w-full py-2 rounded-xl bg-pink-400 text-white text-sm font-medium hover:bg-pink-500 transition-colors"
-      >
-        추가하기
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+        <button type="submit" className="win95-btn" style={{ fontSize: 13, fontWeight: 'bold' }}>
+          추가하기
+        </button>
+      </div>
     </form>
   );
 }

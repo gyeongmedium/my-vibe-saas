@@ -19,26 +19,44 @@ export default function StudyPage() {
   }, [isRunning]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] gap-8 px-6">
-      <h2 className="text-lg font-bold text-pink-400">공부 중이에요 🌸</h2>
-      <StudyCharacter isRunning={isRunning} />
-      <StudyTimer seconds={seconds} />
+    <div>
+      <div className="win95-title">
+        <div className="flex items-center gap-2">
+          <span style={{ display: 'inline-block', width: 16, height: 16, background: '#00ff00', border: '1px solid #000', fontSize: 10, textAlign: 'center', lineHeight: '16px' }}>T</span>
+          <span>공부 모드 - 타이머</span>
+        </div>
+        <div className="flex gap-1">
+          <button className="win95-title-btn">?</button>
+          <button className="win95-title-btn">X</button>
+        </div>
+      </div>
 
-      <div className="flex gap-3">
-        <button
-          onClick={() => setIsRunning((r) => !r)}
-          aria-label={isRunning ? '타이머 일시정지' : '타이머 재개'}
-          className="px-5 py-2 rounded-full bg-white border border-pink-200 text-pink-400 text-sm font-medium hover:bg-pink-100 transition-colors"
-        >
-          {isRunning ? '일시정지' : '재개'}
-        </button>
-        <button
-          onClick={() => { setSeconds(0); setIsRunning(false); }}
-          aria-label="타이머 초기화"
-          className="px-5 py-2 rounded-full bg-white border border-pink-200 text-pink-400 text-sm font-medium hover:bg-pink-100 transition-colors"
-        >
-          초기화
-        </button>
+      <div style={{ background: '#c0c0c0', padding: '40px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
+        <StudyCharacter isRunning={isRunning} />
+        <StudyTimer seconds={seconds} />
+
+        <div className="win95-sunken" style={{ background: '#fff', padding: '10px 24px', fontSize: 13 }}>
+          {isRunning ? '타이머 실행 중...' : '일시정지됨'}
+        </div>
+
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button
+            onClick={() => setIsRunning((r) => !r)}
+            aria-label={isRunning ? '타이머 일시정지' : '타이머 재개'}
+            className="win95-btn"
+            style={{ fontSize: 13, minWidth: 100 }}
+          >
+            {isRunning ? '일시정지' : '재개'}
+          </button>
+          <button
+            onClick={() => { setSeconds(0); setIsRunning(false); }}
+            aria-label="타이머 초기화"
+            className="win95-btn"
+            style={{ fontSize: 13, minWidth: 100 }}
+          >
+            초기화
+          </button>
+        </div>
       </div>
     </div>
   );

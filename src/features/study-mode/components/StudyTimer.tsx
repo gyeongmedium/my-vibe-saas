@@ -8,7 +8,12 @@ export default function StudyTimer({ seconds }: StudyTimerProps) {
   const s = (seconds % 60).toString().padStart(2, '0');
 
   return (
-    <div className="text-5xl font-bold text-pink-400 tracking-widest font-mono">
+    <div className="win95-sunken" style={{
+      background: '#000', color: '#00ff00',
+      fontFamily: 'monospace', fontSize: 36,
+      fontWeight: 'bold', letterSpacing: 6,
+      padding: '12px 28px',
+    }}>
       {h}:{m}:{s}
     </div>
   );

@@ -16,12 +16,14 @@ export default function ItemList({ items, onToggle, onDelete, onEdit, emptyMessa
   }
 
   return (
-    <ul className="flex flex-col gap-3 px-4 pb-6">
-      {items.map((item) => (
-        <li key={item.id}>
-          <ItemCard item={item} onToggle={onToggle} onDelete={onDelete} onEdit={onEdit} />
-        </li>
-      ))}
-    </ul>
+    <div className="win95-listbox" style={{ margin: '0 12px 12px', minHeight: 120 }}>
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+        {items.map((item, i) => (
+          <li key={item.id} style={i > 0 ? { borderTop: '1px solid #e0e0e0' } : {}}>
+            <ItemCard item={item} onToggle={onToggle} onDelete={onDelete} onEdit={onEdit} />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
