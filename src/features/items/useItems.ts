@@ -37,5 +37,15 @@ export function useItems() {
     setItems((prev) => prev.filter((item) => item.id !== id));
   }
 
-  return { items, addItem, toggleItem, deleteItem };
+  function editItem(id: string, updates: { title: string; dueDate: string }) {
+    setItems((prev) =>
+      sortByDueDate(
+        prev.map((item) =>
+          item.id === id ? { ...item, ...updates } : item
+        )
+      )
+    );
+  }
+
+  return { items, addItem, toggleItem, deleteItem, editItem };
 }

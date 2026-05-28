@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import { StudyItem } from '../types';
 import ExamDailyPlan from './ExamDailyPlan';
 
@@ -17,10 +20,63 @@ interface ItemCardProps {
   item: StudyItem;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
+  onEdit: (id: string, updates: { title: string; dueDate: string }) => void;
 }
 
-export default function ItemCard({ item, onToggle, onDelete }: ItemCardProps) {
+export default function ItemCard({ item, onToggle, onDelete, onEdit }: ItemCardProps) {
   const isCompleted = item.status === 'completed';
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState(item.title);
+  const [editDueDate, setEditDueDate] = useState(item.dueDate);
+
+  function handleSave() {
+    if (!editTitle.trim() || !editDueDate) return;
+    onEdit(item.id, { title: editTitle.trim(), dueDate: editDueDate });
+    setIsEditing(false);
+  }
+
+  function handleCancel() {
+    setEditTitle(item.title);
+    setEditDueDate(item.dueDate);
+    setIsEditing(false);
+  }
+
+  if (isEditing) {
+    return (
+      <div className="rounded-2xl p-4 bg-white border border-pink-200 flex flex-col gap-2">
+        <label htmlFor={`edit-title-${item.id}`} className="sr-only">항목 제목</label>
+        <input
+          id={`edit-title-${item.id}`}
+          type="text"
+          value={editTitle}
+          onChange={(e) => setEditTitle(e.target.value)}
+          className="w-full px-3 py-2 rounded-xl border border-pink-100 text-sm outline-none focus:border-pink-300"
+        />
+        <label htmlFor={`edit-due-${item.id}`} className="sr-only">마감기한</label>
+        <input
+          id={`edit-due-${item.id}`}
+          type="date"
+          value={editDueDate}
+          onChange={(e) => setEditDueDate(e.target.value)}
+          className="w-full px-3 py-2 rounded-xl border border-pink-100 text-sm outline-none focus:border-pink-300 text-gray-600"
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={handleSave}
+            className="flex-1 py-1.5 rounded-xl bg-pink-400 text-white text-sm font-medium hover:bg-pink-500 transition-colors"
+          >
+            저장
+          </button>
+          <button
+            onClick={handleCancel}
+            className="flex-1 py-1.5 rounded-xl bg-pink-50 text-pink-400 text-sm font-medium hover:bg-pink-100 transition-colors"
+          >
+            취소
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -51,15 +107,27 @@ export default function ItemCard({ item, onToggle, onDelete }: ItemCardProps) {
             <ExamDailyPlan dailyPlan={item.dailyPlan} unit={item.unit} />
           )}
         </div>
-        {isCompleted && (
-          <button
-            onClick={() => onDelete(item.id)}
-            aria-label="항목 삭제"
-            className="text-gray-300 hover:text-red-400 transition-colors text-sm px-1"
-          >
-            ✕
-          </button>
-        )}
+
+        <div className="flex gap-1 shrink-0">
+          {!isCompleted && (
+            <button
+              onClick={() => setIsEditing(true)}
+              aria-label="항목 수정"
+              className="text-gray-300 hover:text-pink-400 transition-colors text-sm px-1"
+            >
+              ✎
+            </button>
+          )}
+          {isCompleted && (
+            <button
+              onClick={() => onDelete(item.id)}
+              aria-label="항목 삭제"
+              className="text-gray-300 hover:text-red-400 transition-colors text-sm px-1"
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
