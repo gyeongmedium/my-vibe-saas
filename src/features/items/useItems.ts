@@ -11,8 +11,13 @@ function sortByDueDate(items: StudyItem[]): StudyItem[] {
 
 export function useItems() {
   const [items, setItems] = useState<StudyItem[]>(() => {
-    const stored = loadItems();
-    return stored.length > 0 ? stored : mockItems;
+    // SSR 환경에서는 localStorage 없으므로 mockItems 반환
+    if (typeof window === 'undefined') return mockItems;
+    // key가 없으면 첫 방문 → 샘플 데이터 표시
+    const raw = localStorage.getItem('study-planner-items');
+    if (raw === null) return mockItems;
+    // key가 있으면 저장값 사용 (빈 배열 포함)
+    return loadItems();
   });
 
   useEffect(() => {
