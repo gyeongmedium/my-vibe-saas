@@ -13,12 +13,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-pink-50 flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen bg-pink-50 flex flex-col">
       <div className="flex-1 pb-20">
         {children}
       </div>
 
-      <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-pink-100 flex">
+      <nav className="fixed bottom-0 left-0 w-full bg-white border-t border-pink-100 flex">
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           return (
