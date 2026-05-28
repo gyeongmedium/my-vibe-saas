@@ -116,15 +116,14 @@ export default function CalendarPage() {
                 {dayItems.slice(0, 2).map((item) => (
                   <div
                     key={item.id}
-                    className={`relative group text-white text-[9px] px-1 py-0.5 rounded truncate cursor-default ${TYPE_COLOR[item.type]} ${
-                      item.status === 'completed' ? 'opacity-40' : ''
-                    }`}
+                    className={`group relative cursor-default ${item.status === 'completed' ? 'opacity-40' : ''}`}
                   >
-                    {TYPE_LABEL[item.type]}
-                    {/* hover 툴팁 */}
-                    <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 z-50
-                      hidden group-hover:block
-                      bg-gray-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap shadow-lg">
+                    {/* 배지 텍스트 */}
+                    <div className={`text-white text-[9px] px-1 py-0.5 rounded truncate ${TYPE_COLOR[item.type]}`}>
+                      {TYPE_LABEL[item.type]}
+                    </div>
+                    {/* hover 툴팁 — overflow:hidden 바깥에 위치 */}
+                    <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1 z-50 hidden group-hover:block bg-gray-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap shadow-lg">
                       {item.title}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800" />
                     </div>
