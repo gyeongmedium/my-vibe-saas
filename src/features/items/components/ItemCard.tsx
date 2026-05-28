@@ -24,8 +24,8 @@ export default function ItemCard({ item, onToggle, onDelete }: ItemCardProps) {
 
   return (
     <div
-      className={`rounded-2xl p-4 border transition-opacity ${
-        isCompleted ? 'opacity-50 border-gray-100 bg-gray-50' : 'border-pink-100 bg-white'
+      className={`rounded-2xl p-4 transition-opacity ${
+        isCompleted ? 'opacity-40' : 'bg-pink-100/40'
       }`}
     >
       <div className="flex items-start gap-3">
