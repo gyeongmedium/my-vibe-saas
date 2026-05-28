@@ -8,11 +8,11 @@ This file provides guidance to Claude Code when working with this repository.
 단일 사용자 기준 프론트엔드 MVP. 로그인·DB·외부 API 없음.
 
 설계 문서:
-- `01.Product Brief.md` — 제품 목표, 문제, MVP 범위
-- `02.Requirements Spec.md` — 유즈케이스, 기능 요구사항(FR), 인수 기준(AC)
-- `03.UX UI Spec.md` — 화면 구성, 컴포넌트 계획, 인터랙션 규칙
-- `04.Technical Design.md` — 아키텍처, 소스 구조, 데이터 모델, 알고리즘
-- `05.Delivery Plan.md` — 회차별 구현 계획, QA 체크리스트
+- `planning/md-design/01_PRODUCT_BRIEF.md` — 제품 목표, 문제, MVP 범위
+- `planning/md-design/02_REQUIREMENTS_SPEC.md` — 유즈케이스, 기능 요구사항(FR), 인수 기준(AC)
+- `planning/md-design/03_UX_UI_SPEC.md` — 화면 구성, 컴포넌트 계획, 인터랙션 규칙
+- `planning/md-design/04_TECHNICAL_DESIGN.md` — 아키텍처, 소스 구조, 데이터 모델, 알고리즘
+- `planning/md-design/05_DELIVERY_PLAN.md` — 회차별 구현 계획, QA 체크리스트
 
 ---
 
