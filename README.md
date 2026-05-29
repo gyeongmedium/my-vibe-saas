@@ -1,8 +1,20 @@
 # 시험 플래너 — Study Planner MVP
 
-대학생 시험기간 관리 서비스. 과제·강의·시험 마감기한을 한눈에 관리하고, 시험 범위를 날짜별로 자동 배분하며, 캐릭터와 함께하는 공부 모드를 제공합니다.
+대학생 시험기간 관리 서비스. 과제·강의·시험 마감기한을 한눈에 관리하고, 시험 범위를 날짜별로 자동 배분하며, 집중 타이머로 공부 시간을 기록합니다.
 
 🌐 **배포 URL**: https://study-planner-mvp.vercel.app
+
+---
+
+## 화면 예시
+
+| 온보딩 | 항목 관리 |
+|---|---|
+| ![온보딩](public/screenshots/01-landing.png) | ![항목 관리](public/screenshots/02-add-item.png) |
+
+| 달력 뷰 | 집중 타이머 |
+|---|---|
+| ![달력](public/screenshots/03-calendar.png) | ![타이머](public/screenshots/04-study-timer.png) |
 
 ---
 
@@ -16,7 +28,7 @@
 | 완료 토글 | 완료된 항목은 취소선 + 투명도로 표시 |
 | 유형 필터 | 과제 / 강의 / 시험 탭으로 필터링 |
 | 달력 뷰 | 월별 달력에서 마감일 한눈에 확인 |
-| 공부 모드 | 캐릭터 + 타이머로 집중 공부 |
+| 집중 타이머 | 공부 시간 측정 (일시정지 / 초기화) |
 | 로컬 저장 | localStorage 기반 — 새로고침해도 데이터 유지 |
 
 ---
@@ -46,7 +58,7 @@ npx playwright test
 | Framework | Next.js 14 (App Router) |
 | UI | React 18 |
 | Language | TypeScript |
-| Styling | Tailwind CSS |
+| Styling | Tailwind CSS + Win95 CSS |
 | Storage | localStorage |
 | Test | Playwright |
 
@@ -61,10 +73,10 @@ src/
     app/
       page.tsx            # 메인 앱 (/app)
       calendar/page.tsx   # 달력 뷰 (/app/calendar)
-      study/page.tsx      # 공부 모드 (/app/study)
+      study/page.tsx      # 집중 타이머 (/app/study)
   features/
     items/                # 항목 CRUD (types, storage, useItems, components)
-    study-mode/           # 공부 모드 (타이머, 캐릭터)
+    study-mode/           # 타이머 컴포넌트
   lib/
     examSchedule.ts       # 시험 범위 자동 배분 알고리즘
 ```
