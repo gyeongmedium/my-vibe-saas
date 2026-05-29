@@ -12,7 +12,7 @@ const nextConfig = {
           {
             key: 'Content-Security-Policy',
             // 인라인 style prop이 많으므로 'unsafe-inline' 필요
-            value: "default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'",
+            value: "default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'",
           },
         ],
       },
