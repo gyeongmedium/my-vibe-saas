@@ -38,7 +38,7 @@ User
 | Framework       | Next.js 14       | App Router 기반 웹앱 구현 |
 | UI Library      | React 18         | 컴포넌트 기반 UI 구성       |
 | Language        | TypeScript       | 타입 기반 안정성 확보        |
-| Styling         | Tailwind CSS     | 빠른 UI 스타일링          |
+| Styling         | Tailwind CSS + Win95 CSS classes | 빠른 UI + Windows 95 테마 |
 | AI Coding       | Claude Code      | 코드 생성, 수정, 검토       |
 | Version Control | GitHub           | 커밋, 브랜치, 비교 실험      |
 | Test            | Playwright later | 4회차 테스트 자동화 예정      |
@@ -47,10 +47,14 @@ User
 
 ## 4. Route Design
 
-| Route  | File Path              | Purpose       | Notes       |
-| ------ | ---------------------- | ------------- | ----------- |
-| `/`    | `src/app/page.tsx`     | Landing Page  | 서비스 소개, CTA |
-| `/app` | `src/app/app/page.tsx` | Main App Page | 실제 기능 사용 화면 |
+| Route            | File Path                        | Purpose        | Notes                     |
+| ---------------- | -------------------------------- | -------------- | ------------------------- |
+| `/`              | `src/app/page.tsx`               | Landing Page   | 서비스 소개, CTA              |
+| `/app`           | `src/app/app/page.tsx`           | Main App Page  | 실제 기능 사용 화면              |
+| `/app/calendar`  | `src/app/app/calendar/page.tsx`  | Calendar Page  | 월별 달력, 항목 시각화            |
+| `/app/study`     | `src/app/app/study/page.tsx`     | Study Mode     | 캐릭터 공부 타이머 (overlay 폐기)  |
+
+> 모든 `/app/*` 라우트는 `src/app/app/layout.tsx`의 Win95 윈도우 + 태스크바를 공유한다.
 
 ---
 
@@ -60,18 +64,17 @@ User
 src/
   app/
     layout.tsx
-    globals.css
-    page.tsx                          # Landing Page
+    globals.css                       # Win95 CSS 클래스 정의
+    page.tsx                          # Landing Page (/)
     app/
-      page.tsx                        # Main App Page
+      layout.tsx                      # Win95 윈도우 + 태스크바 (공유 레이아웃)
+      page.tsx                        # Main App Page (/app)
+      calendar/
+        page.tsx                      # Calendar Page (/app/calendar)
+      study/
+        page.tsx                      # Study Mode Page (/app/study)
 
   components/
-    ui/
-      Button.tsx
-      Input.tsx
-      Card.tsx
-      Checkbox.tsx
-
     layout/
       AppHeader.tsx
       EmptyState.tsx
@@ -88,19 +91,19 @@ src/
         ItemCard.tsx
         FilterTabs.tsx
         ExamDailyPlan.tsx
-        EmptyState.tsx
 
     study-mode/
-      useStudyTimer.ts                # 타이머 커스텀 훅
       components/
-        StudyModeOverlay.tsx
-        StudyCharacter.tsx
-        StudyTimer.tsx
+        StudyCharacter.tsx            # ASCII face 캐릭터
+        StudyTimer.tsx                # LED 스타일 타이머
 
   lib/
     examSchedule.ts                   # 시험 범위 자동 배분 로직
     utils.ts                          # 날짜 포맷 등 공통 유틸
 ```
+
+> `components/ui/` (Button, Input, Card, Checkbox) 및 `StudyModeOverlay.tsx`는 제거됨.  
+> UI는 Win95 CSS 클래스(`globals.css`)와 inline style로 대체.
 
 ## 폴더 역할
 
@@ -111,8 +114,8 @@ src/
 | `src/components/layout`              | 레이아웃 관련 컴포넌트           |
 | `src/features/items`                 | 항목 관리 기능 단위 코드          |
 | `src/features/items/components`      | items 기능 전용 컴포넌트       |
-| `src/features/study-mode`            | 캐릭터 공부 모드 기능 단위 코드     |
-| `src/features/study-mode/components` | study-mode 전용 컴포넌트    |
+| `src/features/study-mode`            | 캐릭터 공부 모드 기능 단위 코드 (overlay 폐기, `/app/study` 페이지로 대체) |
+| `src/features/study-mode/components` | StudyCharacter, StudyTimer |
 | `src/lib`                            | 순수 로직 유틸 (UI 의존성 없음)   |
 
 ---
@@ -242,7 +245,7 @@ export type StudyItem = AssignmentItem | LectureItem | ExamItem;
 | ------------ | ----------------- |
 | DB           | 사용하지 않음           |
 | API Server   | 사용하지 않음           |
-| localStorage | 기본 저장 방식 (`study-items` 키) |
+| localStorage | 기본 저장 방식 (`study-planner-items` 키) |
 | mock data    | 초기 화면 구성용 (`mock-data.ts`) |
 
 ## 저장 흐름
@@ -346,6 +349,9 @@ User Action
 | ItemType으로 유형 분기          | 과제/강의/시험이 서로 다른 필드를 가짐          | 시험만 scope, dailyPlan 보유 |
 | API 미구현                   | 시간 제한과 학습 목표 고려                  | 서버 기능은 향후 확장         |
 | 날짜 라이브러리 없음              | 단순 날짜 연산만 필요, 번들 최소화             | lib/utils.ts에 직접 구현  |
+| **Windows 95 테마 적용**      | 레트로 디자인으로 개성 있는 UX 제공            | Tailwind 유틸 최소화, Win95 CSS 클래스 + inline style 중심 |
+| **공부 모드 오버레이 → 별도 페이지**  | 오버레이 hydration 문제 + 라우트 분리 명확성   | `/app/study` 독립 페이지, 태스크바로 진입 |
+| **이모지 제거**                | 폰트 렌더링 불일치, Win95 테마와 충돌         | ASCII face `(^o^)` / `(-_-)` + 텍스트 아이콘으로 대체 |
 
 ---
 

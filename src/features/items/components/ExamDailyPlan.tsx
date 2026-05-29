@@ -1,4 +1,5 @@
 import { DailyStudyPlan } from '../types';
+import { getTodayString } from '@/lib/utils';
 
 interface ExamDailyPlanProps {
   dailyPlan: DailyStudyPlan[];
@@ -6,7 +7,7 @@ interface ExamDailyPlanProps {
 }
 
 export default function ExamDailyPlan({ dailyPlan, unit }: ExamDailyPlanProps) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getTodayString();
   const todayPlan = dailyPlan.find((p) => p.date === today);
   if (!todayPlan) return null;
   const unitLabel = unit === 'chapter' ? '챕터' : '페이지';

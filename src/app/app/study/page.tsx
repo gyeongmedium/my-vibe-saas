@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import StudyCharacter from '@/features/study-mode/components/StudyCharacter';
 import StudyTimer from '@/features/study-mode/components/StudyTimer';
+import WindowTitleBar from '@/components/layout/WindowTitleBar';
 
 export default function StudyPage() {
   const [seconds, setSeconds] = useState(0);
@@ -20,16 +21,7 @@ export default function StudyPage() {
 
   return (
     <div>
-      <div className="win95-title">
-        <div className="flex items-center gap-2">
-          <span style={{ display: 'inline-block', width: 16, height: 16, background: '#00ff00', border: '1px solid #000', fontSize: 10, textAlign: 'center', lineHeight: '16px' }}>T</span>
-          <span>공부 모드 - 타이머</span>
-        </div>
-        <div className="flex gap-1">
-          <button className="win95-title-btn">?</button>
-          <button className="win95-title-btn">X</button>
-        </div>
-      </div>
+      <WindowTitleBar icon="T" iconBg="#00ff00" title="공부 모드 - 타이머" />
 
       <div style={{ background: '#c0c0c0', padding: '40px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
         <StudyCharacter isRunning={isRunning} />

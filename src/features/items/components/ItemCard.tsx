@@ -2,13 +2,8 @@
 
 import { useState } from 'react';
 import { StudyItem } from '../types';
+import { TYPE_LABEL } from '../constants';
 import ExamDailyPlan from './ExamDailyPlan';
-
-const TYPE_LABEL: Record<StudyItem['type'], string> = {
-  assignment: '과제',
-  lecture: '강의',
-  exam: '시험',
-};
 
 interface ItemCardProps {
   item: StudyItem;
@@ -35,10 +30,10 @@ export default function ItemCard({ item, onToggle, onDelete, onEdit }: ItemCardP
   if (isEditing) {
     return (
       <div className="win95-window" style={{ padding: '16px 20px', margin: '4px 8px' }}>
-        <label htmlFor={`edit-title-${item.id}`} style={{ display: 'block', fontSize: 13, marginBottom: 6 }}>제목:</label>
+        <label htmlFor={`edit-title-${item.id}`} className="win95-form-label">제목:</label>
         <input id={`edit-title-${item.id}`} type="text" value={editTitle}
           onChange={(e) => setEditTitle(e.target.value)} className="win95-input" style={{ marginBottom: 12 }} />
-        <label htmlFor={`edit-due-${item.id}`} style={{ display: 'block', fontSize: 13, marginBottom: 6 }}>마감기한:</label>
+        <label htmlFor={`edit-due-${item.id}`} className="win95-form-label">마감기한:</label>
         <input id={`edit-due-${item.id}`} type="date" value={editDueDate}
           onChange={(e) => setEditDueDate(e.target.value)} className="win95-input" style={{ marginBottom: 14 }} />
         <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>

@@ -2,13 +2,8 @@
 
 import { useState } from 'react';
 import { ItemType, StudyItem } from '../types';
+import { TYPE_OPTIONS } from '../constants';
 import { distributeScope } from '@/lib/examSchedule';
-
-const TYPE_OPTIONS: { label: string; value: ItemType }[] = [
-  { label: '과제', value: 'assignment' },
-  { label: '강의', value: 'lecture' },
-  { label: '시험', value: 'exam' },
-];
 
 interface ItemFormProps {
   onAdd: (item: StudyItem) => void;
@@ -62,14 +57,14 @@ export default function ItemForm({ onAdd }: ItemFormProps) {
 
       {/* 제목 */}
       <div style={{ marginBottom: 14 }}>
-        <label htmlFor="item-title" style={{ display: 'block', fontSize: 13, marginBottom: 5 }}>항목 제목:</label>
+        <label htmlFor="item-title" className="win95-form-label">항목 제목:</label>
         <input id="item-title" type="text" placeholder="제목을 입력하세요" value={title}
           onChange={(e) => setTitle(e.target.value)} className="win95-input" />
       </div>
 
       {/* 마감기한 */}
       <div style={{ marginBottom: 14 }}>
-        <label htmlFor="item-due" style={{ display: 'block', fontSize: 13, marginBottom: 5 }}>마감기한:</label>
+        <label htmlFor="item-due" className="win95-form-label">마감기한:</label>
         <input id="item-due" type="date" value={dueDate}
           onChange={(e) => setDueDate(e.target.value)} className="win95-input" />
       </div>
@@ -78,12 +73,12 @@ export default function ItemForm({ onAdd }: ItemFormProps) {
       {type === 'exam' && (
         <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
           <div style={{ flex: 1 }}>
-            <label htmlFor="item-scope" style={{ display: 'block', fontSize: 13, marginBottom: 5 }}>시험 범위:</label>
+            <label htmlFor="item-scope" className="win95-form-label">시험 범위:</label>
             <input id="item-scope" type="number" min={1} placeholder="총 범위" value={scope}
               onChange={(e) => setScope(e.target.value)} className="win95-input" />
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: 13, marginBottom: 5 }}>단위:</label>
+            <label className="win95-form-label">단위:</label>
             <select aria-label="범위 단위" value={unit}
               onChange={(e) => setUnit(e.target.value as 'chapter' | 'page')}
               className="win95-input" style={{ width: 90 }}>

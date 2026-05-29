@@ -3,15 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useItems } from '@/features/items/useItems';
 import { StudyItem } from '@/features/items/types';
+import { TYPE_LABEL, TYPE_COLOR } from '@/features/items/constants';
+import { getTodayString } from '@/lib/utils';
+import WindowTitleBar from '@/components/layout/WindowTitleBar';
 
-const TYPE_COLOR: Record<StudyItem['type'], string> = {
-  assignment: '#000080',
-  lecture: '#808000',
-  exam: '#800000',
-};
-const TYPE_LABEL: Record<StudyItem['type'], string> = {
-  assignment: '과제', lecture: '강의', exam: '시험',
-};
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 export default function CalendarPage() {
@@ -23,7 +18,7 @@ export default function CalendarPage() {
   const month = current.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getTodayString();
 
   const itemsByDate: Record<string, StudyItem[]> = {};
   items.forEach((item) => {
@@ -46,17 +41,7 @@ export default function CalendarPage() {
 
   return (
     <div>
-      {/* 타이틀바 */}
-      <div className="win95-title">
-        <div className="flex items-center gap-2">
-          <span style={{ display: 'inline-block', width: 16, height: 16, background: '#ffffff', border: '1px solid #000', fontSize: 10, textAlign: 'center', lineHeight: '16px' }}>C</span>
-          <span>달력</span>
-        </div>
-        <div className="flex gap-1">
-          <button className="win95-title-btn">?</button>
-          <button className="win95-title-btn">X</button>
-        </div>
-      </div>
+      <WindowTitleBar icon="C" iconBg="#ffffff" title="달력" />
 
       <div style={{ background: '#c0c0c0', padding: '28px 32px' }}>
         {/* 월 네비게이션 */}

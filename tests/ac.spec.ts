@@ -97,7 +97,7 @@ test('AC-004: 완료 토글 — 체크 후 취소선 표시', async ({ page }) =
   await page.getByLabel('테스트 과제 완료 처리').check();
 
   const title = page.getByText('테스트 과제');
-  await expect(title).toHaveClass(/line-through/);
+  await expect(title).toHaveCSS('text-decoration', /line-through/);
 });
 
 // ─────────────────────────────────────────────
@@ -129,7 +129,7 @@ test('AC-005: 유형 필터 — 시험만 표시', async ({ page }) => {
 test('AC-006: 공부 모드 — 캐릭터와 타이머 표시', async ({ page }) => {
   await page.goto('/app/study');
 
-  await expect(page.getByText('🐣')).toBeVisible();
+  await expect(page.getByText('(^o^)')).toBeVisible();
   await expect(page.getByText(/\d{2}:\d{2}:\d{2}/)).toBeVisible();
   await expect(page.getByRole('button', { name: '타이머 일시정지' })).toBeVisible();
 });

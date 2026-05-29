@@ -1,4 +1,5 @@
 import { DailyStudyPlan } from '@/features/items/types';
+import { formatDate } from './utils';
 
 export function distributeScope(
   scope: number,
@@ -25,7 +26,7 @@ export function distributeScope(
   for (let i = 0; i < days; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
-    const dateStr = d.toISOString().slice(0, 10);
+    const dateStr = formatDate(d);
     plan.push({
       date: dateStr,
       amount: i === 0 ? base + remainder : base,
